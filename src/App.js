@@ -1,24 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { UserProvider } from './context/UserContext';
+import AppNavbar from './components/AppNavbar';
+import Container from 'react-bootstrap/Container';
+import Home from './pages/HomePage';
+import Register from './pages/RegisterPage';
+import Login from './pages/LoginPage';
+import Logout from './pages/LogoutPage';
+import Workouts from './pages/Workouts';
+import AddWorkout from './pages/AddWorkout';
+import {jwtDecode} from 'jwt-decode'; 
 
 function App() {
+  const [user, setUser] = useState({ id: null });
+
+  const unsetUser = () => {
+    localStorage.clear();
+  }
+
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    setUser({
+      id: decodedToken['id']
+    });
+  }
+}, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <UserProvider value={{ user, setUser, unsetUser }}>
+        <Router>
+          <AppNavbar />
+          <Container>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/addWorkout" element={<AddWorkout />} />
+              <Route path="/getMyWorkouts" element={<Workouts />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/logout" element={<Logout />} />
+            </Routes>
+          </Container>
+        </Router>
+      </UserProvider>
+    </>
   );
 }
 
