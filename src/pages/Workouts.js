@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
-import WorkoutCard from '../components/WorkoutCard'; // Assuming you have a WorkoutCard component
+import WorkoutCard from '../components/WorkoutCard';
 import UserContext from '../context/UserContext';
-import { Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Row, Col, Container } from 'react-bootstrap';
+import '../App.css';
 
 export default function Workouts() {
   const { user } = useContext(UserContext); 
@@ -34,28 +34,19 @@ export default function Workouts() {
   }, [user]);
 
   return (
-    <>
-      {user ? (
-        workouts.length > 0 ? (
-          <>
-            <h1 className='text-center mt-5'>My Workouts</h1>
-            <Row>
-              {workouts.map(workout => (
-                <Col md={3} key={workout._id}>
-                  <WorkoutCard workout={workout} />
-                </Col>
-              ))}
-            </Row>
-          </>
-        ) : (
-          <h1>No Workouts</h1>
-        )
+    <div className="workouts-page">
+      <h1 className='text-center mt-5'>My Workouts</h1>
+      {workouts.length > 0 ? (
+        <Row>
+          {workouts.map(workout => (
+            <Col md={4} lg={3} key={workout._id}>
+              <WorkoutCard workout={workout} />
+            </Col>
+          ))}
+        </Row>
       ) : (
-        <>
-          <h1>You are not logged in</h1>
-          <Link className="btn btn-primary" to={"/login"}>Login to View</Link>
-        </>
+        <h2 className='text-center'>No Workouts</h2>
       )}
-    </>
+    </div>
   );
 }

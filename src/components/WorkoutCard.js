@@ -1,6 +1,7 @@
 import { Card, Form } from 'react-bootstrap';
 import { Notyf } from 'notyf';
 import { useState } from 'react';
+import '../App.css';
 
 export default function WorkoutCard({ workout }) {
   const notyf = new Notyf();
@@ -84,9 +85,10 @@ export default function WorkoutCard({ workout }) {
   }
 
   return (
-    <Card className="mt-3">
+    <Card className="m-3 workout-card">
       <Card.Body>
         <Card.Title>
+        <Card.Subtitle className="mb-1">Exercise Name:</Card.Subtitle>
           <Form.Control
             type="text"
             value={updatedName}

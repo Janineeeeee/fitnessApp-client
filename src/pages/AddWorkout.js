@@ -1,29 +1,28 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Navigate, useNavigate } from 'react-router-dom';
-
 import UserContext from '../context/UserContext';
-
 import { Notyf } from 'notyf';
+import '../App.css';
 
 export default function AddWorkout() {
   const notyf = new Notyf();
-
   const navigate = useNavigate();
-
   const { user } = useContext(UserContext);
 
-  // input states
   const [name, setName] = useState("");
   const [duration, setDuration] = useState("");
   const [error, setError] = useState(null);
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    setIsActive(name.trim() !== "" && duration.trim() !== "");
+  }, [name, duration]);
 
   function createWorkout(e) {
-    // prevent submit event's default behavior
     e.preventDefault();
 
     let token = localStorage.getItem('token');
-    console.log(token);
 
     fetch('https://fitnessapp-api-ln8u.onrender.com/workouts/addWorkout', {
       method: 'POST',
@@ -31,40 +30,31 @@ export default function AddWorkout() {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({
-        name: name,
-        duration: duration
-      })
+      body: JSON.stringify({ name, duration })
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-
         if (data.error) {
           setError(data.error);
           notyf.error(data.error);
-        } else if (data) {
-          setName("")
-          setDuration("")
-
-          notyf.success("Workout Creation Successful")
-          navigate("/getMyWorkouts");
         } else {
-          notyf.error("Error: Something Went Wrong.")
+          setName("");
+          setDuration("");
+          notyf.success("Workout Creation Successful");
+          navigate("/getMyWorkouts");
         }
       })
       .catch(err => {
         console.error(err);
-        notyf.error("Error: Something Went Wrong.")
-      })
+        notyf.error("Error: Something Went Wrong.");
+      });
   }
 
   return (
-    (user.id !== null)
-      ?
-      <>
-        <h1 className="my-5 text-center">Add Workout</h1>
-        <Form onSubmit={e => createWorkout(e)}>
+    (user.id !== null) ? (
+      <div className="add-workout-page">
+        <Form onSubmit={createWorkout} className="workout-form">
+          <h1 className="my-3 text-center">Add Workout</h1>
           <Form.Group>
             <Form.Label>Name:</Form.Label>
             <Form.Control
@@ -72,7 +62,7 @@ export default function AddWorkout() {
               placeholder="Enter Name"
               required
               value={name}
-              onChange={e => { setName(e.target.value) }}
+              onChange={e => setName(e.target.value)}
             />
           </Form.Group>
           <Form.Group>
@@ -82,14 +72,23 @@ export default function AddWorkout() {
               placeholder="Enter Duration"
               required
               value={duration}
-              onChange={e => { setDuration(e.target.value) }}
+              onChange={e => setDuration(e.target.value)}
             />
           </Form.Group>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          <Button variant="primary" type="submit" className="my-5" id="addWorkout">Add Workout</Button>
+          {error && <p className="error-message">{error}</p>}
+          <Button 
+            className="my-2" 
+            variant={isActive ? "dark" : "warning"} 
+            type="submit" 
+            id="workoutBtn" 
+            disabled={!isActive}
+          >
+            Add Workout
+          </Button>
         </Form>
-      </>
-      :
+      </div>
+    ) : (
       <Navigate to="/getMyWorkouts" />
-  )
+    )
+  );
 }

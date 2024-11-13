@@ -1,38 +1,148 @@
-.App {
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: auto;
+}
+
+/* App Navbar */
+.custom-navbar {
+  background-color: #001f3f;
+}
+
+.navbar .nav-link-custom {
+  color: white;
+  margin: 0 15px;
+}
+
+.navbar .nav-link-custom:hover {
+  color: #FFD700; 
+  transition: color 0.3s;
+}
+
+.navbar .nav-link-custom.active {
+  color: #FFD700 !important;
+}
+
+/* Home Page */
+.home-page {
+  position: relative;
+  background-image: url('./assets/home-page.jpg'); 
+  background-size: cover; 
+  background-position: center; 
+  height: 100vh; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  padding: 20px; 
+  margin: 0;
+  overflow: hidden; 
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.home-page::before {
+  content: '';
+  position: absolute; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 1; 
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.home-page h1,
+.home-page p {
+  position: relative;
+  color: white; 
+  font-weight: bold; 
+  z-index: 2; 
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Login Page */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  background-color: #f0f0f0; 
+  padding-top: 50px;
+}
+
+.login-form {
+  background-color: white; 
+  padding: 20px;
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  width: 100%;
+  max-width: 400px; 
+}
+
+/* Register page */
+.register-page {
+  background-color: #f8f9fa;
+  min-height: 100vh; 
   display: flex;
   flex-direction: column;
+  justify-content: flex-start; 
+  align-items: center; 
+  padding-top: 50px;
+}
+
+.register-form {
+  background-color: white; 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  width: 100%;
+  max-width: 400px; 
+}
+
+/* Add Workout Page */
+.add-workout-page {
+  background-color: #f8f9fa; 
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding-top: 50px;
 }
 
-.App-link {
-  color: #61dafb;
+.workout-form {
+  background-color: white; 
+  padding: 20px;
+  border-radius: 8px; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  width: 100%;
+  max-width: 400px; 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.error-message {
+  color: red; 
 }
+
+/* Workout page*/
+.workouts-page {
+  min-height: 100vh;
+  padding: 20px; 
+  background-color: #f8f9fa; 
+  overflow-y: auto;
+}
+
+.workouts-page h1 {
+  color: #333333;
+  margin-bottom: 30px;
+}
+
+/* Workout card */
+.workout-card {
+  background-color: #ffffff; 
+  border: 1px solid #dee2e6; 
+  border-radius: 0.5rem; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+

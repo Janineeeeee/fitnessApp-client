@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { Link  } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Notyf } from 'notyf';
+import '../App.css';
 
 function RegisterPage() {
   const notyf = new Notyf();
@@ -29,9 +30,7 @@ function RegisterPage() {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data); 
-
-      if (data._id) { 
+      if (data._id) {
         localStorage.setItem('userId', data._id);
         setUser({ id: data._id });
         setEmail('');
@@ -52,9 +51,9 @@ function RegisterPage() {
   }, [email, password, confirmPassword]);
 
   return (
-    <div>
-      <h1 className="my-5 text-center">Register</h1>
-      <Form onSubmit={register}>
+    <div className="register-page">
+      <Form onSubmit={register} className="register-form">
+      <h1 className="my-3 text-center">Register</h1>
         <Form.Group>
           <Form.Label>Email address</Form.Label>
           <Form.Control 
@@ -88,10 +87,10 @@ function RegisterPage() {
           />
         </Form.Group>
 
-        <Button variant={isActive ? "primary" : "danger"} type="submit" id="registerBtn" disabled={!isActive}>
-          Register
-        </Button>
-        <p className="mt-3">Already have an account? <Link to="/login">Login now</Link></p>
+        <Button variant={isActive ? "dark" : "warning"} type="submit" id="registerBtn" disabled={!isActive}>
+                    Register
+                </Button>
+        <p className="mt-3">Already have an account? <Link to="/login" style={{ color: '#001f3f' }}>Login now</Link></p>
       </Form>
     </div>
   );
